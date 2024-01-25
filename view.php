@@ -53,7 +53,7 @@ CodeWifi $code_wifi, Employement $employement, Food $food) {
         addFood($bussines, $food);
         break;
     case 8:
-        showAboutInternetCafes($bussines, $customer);
+        showAboutInternetCafes($bussines, $customer, $internet_cafes, $code_wifi, $employement, $food);
         break;
     case 9:
         deleteEmployement($bussines);
@@ -103,14 +103,18 @@ function showRuko(Bussines $bussines) {
 
 function addComputer(Bussines $bussines) {
     $arrayBussines = $bussines->getInternetCafes();
+
+    if (count($arrayBussines) == 0) {
+        echo "No Ruko Found\n\n";
+        return;
+    }
     showRuko($bussines);
     
     $number_ruko_add_computer = readline ("Input Number Ruko Will Be Add Computer : ");
-
-    if ($number_ruko_add_computer > count($arrayBussines)) {
+    while((int)$number_ruko_add_computer > count($arrayBussines)) {
        echo "Input More Than Total Ruko\n";
        echo "Please Input Again\n";
-       addComputer($bussines);
+       $number_ruko_add_computer = readline ("Input Number Ruko Will Be Add Computer : ");
     }
 
     for ($i = 0; $i < count($arrayBussines); $i++) {
@@ -124,7 +128,7 @@ function addComputer(Bussines $bussines) {
 
            $choose_room = readline("Choose [1-2]: ");
 
-            while ($choose_room > 2 || $choose_room < 1) {
+            while ((int)$choose_room > 2 || (int)$choose_room < 1) {
                echo "Input Invalid, Please Input Again!!!\n";
                $choose_room = readline("Choose [1-2]: ");
             }
@@ -149,7 +153,7 @@ function addComputer(Bussines $bussines) {
                    $how_many_computer = readline("How Many : ");
                 }
 
-                $arrayBussines[$i]->setTotalPcInVipRoom($arrayBussines[$i]->getTotalPcInVipRoom() + $how_many_computer);
+                $arrayBussines[$i]->setTotalPcInVipRoom($arrayBussines[$i]->getTotalPcInVipRoom() + (int)$how_many_computer);
                echo "Computer Succes Be Added In Room Vip\n";
             }
         }
@@ -157,9 +161,19 @@ function addComputer(Bussines $bussines) {
 }
 
 function addCodeWifi(Bussines $bussines, CodeWifi $code_wifi) {
-    $arrayBussines = $bussines->getInternetCafes();
+   $arrayBussines = $bussines->getInternetCafes();
+    if (count($arrayBussines) == 0) {
+        echo "No Ruko Found\n\n";
+        return;
+    }
+
     showRuko($bussines);
     $numberRukoAddWifi = readline("Input Number Ruko Will Be Add Code Wifi : ");
+    while((int)$numberRukoAddWifi > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        $numberRukoAddWifi = readline("Input Number Ruko Will Be Add Code Wifi : ");
+     }
 
     for ($i = 0; $i < count($arrayBussines); $i++) {
         if ($arrayBussines[(int)$numberRukoAddWifi - 1]->getName() == $arrayBussines[$i]->getName()) {
@@ -250,16 +264,19 @@ function addCodeWifi(Bussines $bussines, CodeWifi $code_wifi) {
     }
 }
 
-
 function addEmployement(Bussines $bussines, Employement $employement) {
     $arrayBussines = $bussines->getInternetCafes();
+    if (count($arrayBussines) == 0) {
+        echo "No Ruko Found\n\n";
+        return;
+    }
     showRuko($bussines);
+    
     $number_ruko = readline("Input Number Ruko Will Be Add Employement : ");
-
-    if ($number_ruko > count($arrayBussines)) {
+    while((int)$number_ruko > count($arrayBussines)) {
        echo "Input More Than Total Ruko\n";
        echo "Please Input Again\n";
-       addEmployement($bussines);
+       $number_ruko = readline("Input Number Ruko Will Be Add Employement : ");
     }
 
     for ($i = 0; $i < count($arrayBussines); $i++) {
@@ -281,15 +298,18 @@ function addEmployement(Bussines $bussines, Employement $employement) {
 
 function absenEmployement(Bussines $bussines) {
     $arrayBussines = $bussines->getInternetCafes();
-
     if (count($arrayBussines) == 0) {
         echo "No Ruko Found\n\n";
         return;
     }
 
-    $arrayBussines = $bussines->getInternetCafes();
     showRuko($bussines);
     $choose_ruko = readline("Input Number Ruko : ");
+    while((int)$choose_ruko > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        $choose_ruko = readline("Input Number Ruko : ");
+     }
 
     for ($i = 0; $i < count($arrayBussines); $i++) {
         if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$choose_ruko - 1]->getName()) {
@@ -315,8 +335,18 @@ function absenEmployement(Bussines $bussines) {
 
 function addCustomer(Bussines $bussines, Customer $customer) {
     $arrayBussines = $bussines->getInternetCafes();
+    if (count($arrayBussines) == 0) {
+        echo "No Ruko Found\n\n";
+        return;
+    }
+
     showRuko($bussines);
     $number_ruko_add_customer =readline("Input Number Ruko Will Be Add Customer : ");
+    while((int)$number_ruko_add_computer > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        $number_ruko_add_customer =readline("Input Number Ruko Will Be Add Customer : ");
+     }
 
     for ($i = 0; $i < count($arrayBussines); $i++) {
         if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$number_ruko_add_customer - 1]->getName()) {
@@ -412,10 +442,10 @@ function chooseServiceUserWarnetan(Bussines $bussines, int $index_ruko , Custome
             return;
         }
 
-        echo "Total Price Is " << $how_long * 8000;
+        $totalPrice = (int)$how_long * 8000;
         $arrayBussines[$index_ruko]->setTotalPcInVipRoom($arrayBussines[$index_ruko]->getTotalPcInVipRoom() - 1);
         $bussines->setOmzet($how_long * 8000);
-        $customer->setTotalPay($how_long * 4000);
+        $customer->setTotalPay($how_long * 8000);
     }
     else {
         echo "Input Invalid, Please Input Again\n";
@@ -554,7 +584,7 @@ function chooseServiceCreatePhoto(Bussines $bussines, int $index_ruko, Customer 
             $choose_size_photo = readline("Choose [1-3] : ");
 
             while ((int)$choose_size_photo > 3 || (int)$choose_size_photo < 1) {
-                cout << "Input Invalid, Please Input Again!!!\n";
+                echo "Input Invalid, Please Input Again!!!\n";
                 $choose_size_photo = readline("Choose [1-3] : ");
             }
 
@@ -688,7 +718,13 @@ function addFood(Bussines $bussines, Food $foods) {
     showRuko($bussines);
     $number_bussines = readline("Input Number Internet Cafes : ");
 
-    for($i = 0 ; count($arrayBussines); $i++) {
+    while((int)$number_bussines > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        $number_bussines = readline("Input Number Internet Cafes : ");
+     }
+
+    for($i = 0 ; $i < count($arrayBussines); $i++) {
         if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$number_bussines - 1]->getName()) {
             $name_food = readline("\nInput Name Food : ");
             $foods->setName($name_food);
@@ -697,14 +733,53 @@ function addFood(Bussines $bussines, Food $foods) {
             $foods->setStok((int)$stok);
 
             $price = readline("Input Price     : ");
-            $foods->setPrice((int)price);
+            $foods->setPrice((int)$price);
 
             $arrayBussines[$i]->setFood($foods);
         }
     }
 }
 
-function showAboutInternetCafes() {
+function deleteEmployement(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+    showRuko($bussines);
+    
+    $choose_ruko = readline("Input Number Internet Cafes : ");
+    while((int)$choose_ruko > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        $choose_ruko = readline("Input Number Internet Cafes : ");
+     }
+  
+    $employement = $arrayBussines[(int)$choose_ruko - 1]->getEmployement();
+    var_dump($employement);
+    $number = 1;
+    for ($i = 0; $i < count($employement); $i++) {
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        echo "       Employement Number $number";
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        $name = $employement[$i]->getName();
+        $id = $employement[$i]->getNomorId();
+        echo "Name Employement : $name\n";
+        echo "Id Employement   : $id\n";
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        $number++;
+    }
+
+    $number_employement = readline("Input Number Employement Will Be Delete : ");
+
+    if ((int)$number_employement > count($employement)) {
+        echo "Input More Than Total Employement\n";
+        echo "Please Input Again\n";
+        deleteEmployement($bussines);
+    }
+
+    unset($employement[$number_employement - 1]);
+    echo "Employement Succes Deleted\n";
+}
+
+function showAboutInternetCafes(Bussines $bussines, Customer $customer, InternetCafes $internet_cafes,
+CodeWifi $code_wifi, Employement $employement, Food $food) {
     echo "\n============= MENU =============\n";
     echo "1. Show All Ruko                  \n";
     echo "2. Show Employement               \n";
@@ -714,4 +789,223 @@ function showAboutInternetCafes() {
     echo "6. Show Total Computer Available  \n";
     echo "7. Show Omzet                       ";
     echo "\n================================\n";
+    chooseAboutInternetCafes($bussines, $customer, $internet_cafes, $code_wifi, $employement, $food);
+}
+
+function chooseAboutInternetCafes(Bussines $bussines, Customer $customer, InternetCafes $internet_cafes,
+CodeWifi $code_wifi, Employement $employement, Food $food) {
+    $choose_user = readline("Choose[1 - 7] : ");
+
+    switch ((int)$choose_user) {
+    case 1:
+        showRuko($bussines);
+        break;
+    case 2:
+        showEmployement($bussines);
+        break;
+    case 3:
+        showAllCustomer($bussines);
+        break;
+    case 4:
+        showAllFood($bussines);
+        break;
+    case 5:
+        showTotalSalaryEmployement($bussines);
+        break;
+    case 6:
+        showTotalComputerAvailable($bussines);
+        break;
+    case 7:
+        $omzet = $bussines->getOmzet();
+        echo "Total Omzet : $omzet \n";
+        break;
+    }
+    showMenu($bussines, $customer, $internet_cafes, $code_wifi, $employement, $food);
+}
+
+
+function showEmployement(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+    if (count($arrayBussines) == 0) {
+        cout << "No Ruko Found\n\n";
+        return;
+    }
+
+    showRuko($bussines);
+    $number_ruko_show = readline("Input Number Ruko Will Be Show Employement : ");
+
+    if ((int)$number_ruko_show > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        showEmployement($arrayBussinesbussines);
+    }
+
+    if (count($arrayBussines[(int)$number_ruko_show - 1]->getEmployement()) == 0) {
+        echo "No Employement Found\n";
+        echo "Please Add Employement\n";
+    }
+
+    $number = 1;
+    for ($i = 0; $i < count($arrayBussines[(int)$number_ruko_show - 1]->getEmployement()); $i++) {
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        echo "       Employement Number $number";
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        $name = $arrayBussines[(int)$number_ruko_show - 1]->getEmployement()[$i]->getName();
+        $id =  $arrayBussines[(int)$number_ruko_show - 1]->getEmployement()[$i]->getNomorId();
+        echo "Name Employement : $name\n";
+        echo "Id Employement   : $id\n";
+        echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n\n";
+        $number++;
+    }
+}
+
+
+function showAllCustomer(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+
+    showRuko($bussines);
+    $choose_show_customer = readline("Input Number Ruko Will Be Show Customer : ");
+
+    if ($choose_show_customer > count($arrayBussines)) {
+       echo "Input More Than Total Ruko\n";
+       echo "Please Input Again\n";
+       showAllCustomer($bussines);
+    }
+
+    if (count($arrayBussines[(int)$choose_show_customer - 1]->getCustomer()) == 0) {
+       echo "No Customer Found\n";
+       echo "Please Add Customer\n";
+       return;
+    }
+
+    for ($i = 0; $i < count($arrayBussines); $i++) {
+        if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$choose_show_customer - 1]->getName()) {
+             $number = 1;
+            for( $j = 0; $j < count($arrayBussines[$i]->getCustomer()); $j++){
+               echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+               echo "        Customer Number $number";
+               echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+               $name = $arrayBussines[$i]->getCustomer()[$j]->getName();
+               $addres = $arrayBussines[$i]->getCustomer()[$j]->getAddres();
+               $age = $arrayBussines[$i]->getCustomer()[$j]->getAge();
+               $keperluan = $arrayBussines[$i]->getCustomer()[$j]->getKeperluan();
+               $totalPay = $arrayBussines[$i]->getCustomer()[$j]->getTotalPay();
+               echo "Name      : $name\n";
+               echo "Addres    : $addres\n";
+               echo "Age       : $age\n";
+               echo "Needs     : $keperluan\n";
+               echo "Total Pay : $totalPay";
+               echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+               $number++;
+            }
+        }
+    }
+}
+
+function showAllFood(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+
+    showRuko($bussines);
+    $choose_show_food = readline("Input Number Ruko Will Be Show Food : ");
+
+    if ((int)$choose_show_food > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        showAllFood($bussines);
+    }
+ 
+    for ( $i = 0; $i < count($arrayBussines); $i++) {
+        if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$choose_show_food - 1]->getName()) {
+            $number = 1;
+            for ($j = 0; $j < count($arrayBussines[$i]->getFood()); $j++) {
+                echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+                echo "          Food Number $number ";
+                echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+                $name = $arrayBussines[$i]->getFood()[$j]->getName();
+                $price = $arrayBussines[$i]->getFood()[$j]->getPrice();
+                $stok =  $arrayBussines[$i]->getFood()[$j]->getStok();
+                echo "Name     : $name\n";
+                echo "Price    : $price\n";
+                echo "Stok     : $stok";
+                echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+                $number++;
+            }
+        }
+    }
+}
+
+function showTotalSalaryEmployement(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+
+    showRuko($bussines);
+    $choose_show_salary = readline("Input Number Ruko Will Be Search Employement For Show Gaji : ");
+
+    if ((int)$choose_show_salary > count($arrayBussines)) {
+        echo "Input More Than Total Ruko\n";
+        echo "Please Input Again\n";
+        showTotalSalaryEmployement($bussines);
+    }
+
+    if (count($arrayBussines[(int)$choose_show_salary - 1]->getEmployement()) == 0) {
+        echo "No Employement Found\n";
+        echo "Please Add Employement\n";
+        return;
+    }
+
+    for ( $i = 0; $i < count($arrayBussines); $i++) {
+        if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$choose_show_salary - 1]->getName()) {
+            $nomor_id = readline("Input Number Id Employement Will Be Show Salary : ");
+
+            for ($j = 0; $j < count($arrayBussines[(int)$choose_show_salary - 1]->getEmployement()); $j++) {
+                if ($arrayBussines[$i]->getEmployement()[$j]->getNomorId() == $nomor_id) {
+                    $employement = $arrayBussines[(int)$choose_show_salary - 1]->getEmployement();
+                    $total_gaji = $employement[$j]->getTotalGaji();
+                    $total_absen = (int)$employement[$j]->getTotalGaji() / 50000;
+                    echo "\nTotal Salary Are Get From Number Id {$nomor_id} Is {$total_gaji}";
+                    echo "\nTotal Absen Are Get From Number Id {$nomor_id} Is {$total_absen}";
+                }
+            }
+        }
+    }
+}
+
+
+function showTotalComputerAvailable(Bussines $bussines) {
+    $arrayBussines = $bussines->getInternetCafes();
+
+    showRuko($bussines);
+    $choose_show_ruko = readline("Input Number Ruko Will Be Show Total Computer Available : ");
+
+    if ((int)$choose_show_ruko > count($arrayBussines)) {
+       echo "Input More Than Total Ruko\n";
+       echo "Please Input Again\n";
+       showTotalComputerAvailable($bussines);
+    }
+
+    for ($i = 0; $i < count($arrayBussines); $i++) {
+        if ($arrayBussines[$i]->getName() == $arrayBussines[(int)$choose_show_ruko - 1]->getName()) {
+           echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+           echo "            List Room           ";
+           echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+           echo "1. Reguler                     \n";
+           echo "2. Vip                         \n";
+           echo "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+
+           $choose_room = readline("Choose[1-2]: ");
+
+            while ((int)$choose_room > 2 || (int)$choose_room < 1) {
+               echo "Input Invalid, Please Input Again\n";
+               $choose_room = readline("Choose[1-2]: ");
+            }
+
+            if ($choose_room == 1) {
+                $total_pc_reguler = $arrayBussines[$i]->getTotalPcInRegulerRoom();
+               echo "Total Computer Available In Reguler Room Is $total_pc_reguler";
+            }
+            else {
+                $total_pc_vip = $arrayBussines[$i]->getTotalPcInVipRoom();
+               echo "Total Computer Available In Reguler Room Is $total_pc_vip";
+            }
+        }
+    }
 }

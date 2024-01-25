@@ -24,7 +24,7 @@ class Customer extends Person {
     public function getAddres() {
         return $this->addres;
     }
-    public function totalPay() {
+    public function getTotalPay() {
         return $this->total_pay;
     }
     };
